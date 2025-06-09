@@ -1,0 +1,25 @@
+{
+  "name": "node-backend-project",
+  "version": "1.0.0",
+  "description": "Backend Node.js project with Express, CORS, and node-fetch",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/server.js",
+    "dev": "ts-node server.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.4.2",
+    "@types/node-fetch": "^2.6.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  }
+}
