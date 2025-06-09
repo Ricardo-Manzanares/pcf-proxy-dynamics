@@ -1,7 +1,7 @@
 {
-  "name": "node-backend-project",
+  "name": "@ricardo-manzanares/pcf-proxy-dynamics",
   "version": "1.0.0",
-  "description": "Backend Node.js project with Express, CORS, and node-fetch",
+  "description": "Backend allowing PCF components to access Dynamics 365 data",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
@@ -21,5 +21,8 @@
     "@types/node-fetch": "^2.6.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
