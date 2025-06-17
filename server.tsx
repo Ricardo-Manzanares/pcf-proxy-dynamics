@@ -62,56 +62,105 @@ async function headers(): Promise<HeadersInit> {
 }
 
 // New record
-app.post('/api/data/v9.2/entity/:entityType', async (req: Request, res: Response) => {
+app.post('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
   console.log('New record...');
-  console.log('Request query:', req.query);
+  console.log('Request body:', req.body);
   console.log('Request params:', req.params);
 
   const { entityType } = req.params;
-  const data = req.body;
   const _headers = await headers();
 
-  const response = await fetch(`${ENVIRONMENT_URL}/api/odata/v9.2/${entityType}`, {
-    method: 'POST',
-    headers: _headers,
-    body: JSON.stringify(data)
-  });
+  try { 
+    const response = await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${entityType}`, {
+      method: 'POST',
+      headers: _headers,
+      body: JSON.stringify(req.body)
+    });
 
-  const result = await response.json();
-  res.json({ id: result.id, name: result.name, entityType });
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).send({ error: text });
+    }
+
+    // Obtener el ID del nuevo recurso desde el header
+    const entityUrl = response.headers.get('OData-EntityId');
+    const idMatch = entityUrl?.match(/\(([^)]+)\)/);
+    const createdId = idMatch?.[1];
+
+    res.json({ id: createdId, entityType });
+  }catch (error) {
+    console.error('Error creating new record:', error);
+    return res.status(500).json({ error: 'Error creating new record', details: error });
+  }
 });
 
 // Delete record
-app.delete('/api/data/v9.2/:entityType/:id', async (req: Request, res: Response) => {
-  const { entityType, id } = req.params;
+app.delete('/api/data/v9.2/*', async (req: Request, res: Response) => {
+  console.log('Delete record...');
+  console.log('Request body:', req.body);
+  console.log('Request params:', req.params);
+  
+  const rawPath = req.params[0];
+
+  let validateFormatParams = rawPath.match(/^([^()]+)\(([^)]+)\)$/);
+  if (!validateFormatParams) {
+    return res.status(400).send('Formato de entidad/ID inválido');
+  }
+
+  const entityType = validateFormatParams[1];
+  const id = validateFormatParams[2];
+
   const _headers = await headers();
 
-  await fetch(`${ENVIRONMENT_URL}/api/odata/v9.2/${entityType}(${id})`, {
-    method: 'DELETE',
-    headers: _headers
-  });
+  try {
+    await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${entityType}(${id})`, {
+      method: 'DELETE',
+      headers: _headers
+    }).then(response => {
+      if (!response.ok) { 
+        throw new Error(`Error delete record: ${response.statusText}`);
+      }
+    });
+  } catch (error) {
+    console.error('Error delete record:', error);
+    return res.status(500).json({ error: 'Error delete record', details: error });
+  }  
 
   res.json({ id, name: '', entityType });
 });
 
 // Update record
-app.patch('/api/data/v9.2/:entityType/:id', async (req: Request, res: Response) => {
-  console.log('Fetching record...');
-  console.log('Request query:', req.query);
+app.patch('/api/data/v9.2/*', async (req: Request, res: Response) => {
+  console.log('Update record...');
+  console.log('Request body:', req.body);
   console.log('Request params:', req.params);
 
-  const { entityType, id } = req.params;
-  const data = req.body;
+  const rawPath = req.params[0];
+
+  let validateFormatParams = rawPath.match(/^([^()]+)\(([^)]+)\)$/);
+  if (!validateFormatParams) {
+    return res.status(400).send('Formato de entidad/ID inválido');
+  }
+
+  const entityType = validateFormatParams[1];
+  const id = validateFormatParams[2];
+
   const _headers = await headers();
 
-  const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
-  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${entityType}${queryParams ? `?${queryParams}` : ''}`;
-
-  await fetch(`${ENVIRONMENT_URL}/api/odata/v9.2/${entityType}(${id})`, {
-    method: 'PATCH',
-    headers: _headers,
-    body: JSON.stringify(data)
-  });
+  try {
+    await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${entityType}(${id})`, {
+      method: 'PATCH',
+      headers: _headers,
+      body: JSON.stringify(req.body)
+    }).then(response => {
+      if (!response.ok) { 
+        throw new Error(`Error updating record: ${response.statusText}`);
+      }
+    });
+  } catch (error) {
+    console.error('Error updating record:', error);
+    return res.status(500).json({ error: 'Error updating record', details: error });
+  }  
 
   res.json({ id, name: '', entityType });
 });
