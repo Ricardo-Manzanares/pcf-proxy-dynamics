@@ -1,6 +1,6 @@
 {
   "name": "@ricardo-manzanares/pcf-proxy-dynamics",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend allowing PCF components to access Dynamics 365 data",
   "main": "dist/server.js",
   "scripts": {
