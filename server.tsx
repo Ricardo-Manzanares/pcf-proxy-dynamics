@@ -185,11 +185,8 @@ app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
   });
 
   const data = await response.json();
-  
-  res.json({
-    entities: data.value,
-    nextLink: data['@odata.nextLink'] || ''
-  });
+
+  res.json(data);
 });
 
 // Retrieve single record
