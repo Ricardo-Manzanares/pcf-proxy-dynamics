@@ -1,8 +1,24 @@
 {
   "name": "@ricardo-manzanares/pcf-proxy-dynamics",
-  "version": "1.0.3",
+  "version": "1.0.11",
   "description": "Backend allowing PCF components to access Dynamics 365 data",
-  "main": "dist/server.js",
+  "main": "dist/WebApiProxy.js",
+  "types": "dist/WebApiProxy.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/WebApiProxy.js",
+      "require": "./dist/WebApiProxy.js",
+      "types": "./dist/WebApiProxy.d.ts"
+    },
+    "./server": {
+      "import": "./dist/server.js",
+      "require": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node dist/server.js",
