@@ -71,7 +71,7 @@ app.post('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
   const _headers = await headers();
 
   try { 
-    const response = await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${entityType}`, {
+    const response = await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${getEntitySetNameFromLogicalName(entityType)}`, {
       method: 'POST',
       headers: _headers,
       body: JSON.stringify(req.body)
@@ -107,7 +107,7 @@ app.delete('/api/data/v9.2/*', async (req: Request, res: Response) => {
     return res.status(400).send('Formato de entidad/ID inválido');
   }
 
-  const entityType = validateFormatParams[1];
+  const entityType = getEntitySetNameFromLogicalName(validateFormatParams[1]);
   const id = validateFormatParams[2];
 
   const _headers = await headers();
@@ -142,7 +142,7 @@ app.patch('/api/data/v9.2/*', async (req: Request, res: Response) => {
     return res.status(400).send('Formato de entidad/ID inválido');
   }
 
-  const entityType = validateFormatParams[1];
+  const entityType = getEntitySetNameFromLogicalName(validateFormatParams[1]);
   const id = validateFormatParams[2];
 
   const _headers = await headers();
@@ -175,7 +175,7 @@ app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
   const _headers = await headers();
   
   const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
-  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${entityType}${queryParams ? `?${queryParams}` : ''}`;
+  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${getEntitySetNameFromLogicalName(entityType)}${queryParams ? `?${queryParams}` : ''}`;
   
   console.log(`Fetching data from: ${url}`);
 
@@ -199,7 +199,7 @@ app.get('/api/data/v9.2/:entityType/:id', async (req: Request, res: Response) =>
   const _headers = await headers();
 
   const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
-  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${entityType}(${id})${queryParams ? `?${queryParams}` : ''}`;
+  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${getEntitySetNameFromLogicalName(entityType)}(${id})${queryParams ? `?${queryParams}` : ''}`;
 
   console.log(`Fetching data from: ${url}`);
 
@@ -269,3 +269,46 @@ app.post('/api/data/v9.2/operation/:operationName', async (req: Request, res: Re
 app.listen(3001, () => {
   console.log('Server PCF-Proxy-Dynamics is running in http://localhost:3001');
 });
+
+function getEntitySetNameFromLogicalName(logicalName : string): string {
+    if (!logicalName || typeof logicalName !== 'string') return '';
+
+    // 1. Exceptions detect from Microsoft documentation
+    const exceptions: { [key: string]: string } = {
+        "person": "people",
+        "child": "children",
+        "ox": "oxen",
+        "goose": "geese",
+        "mouse": "mice",
+        "analysis": "analyses",
+        "basis": "bases",
+        "thesis": "theses"
+    };
+
+    if (exceptions[logicalName]) {
+        return exceptions[logicalName];
+    }
+
+    // 2. Entities already in plural, add "es" if it ends with "s"
+    if (logicalName.endsWith("s")) {
+        return logicalName + "es";
+    }
+
+    // 3. If it ends with "y" preceded by a consonant → replace with "ies"
+    if (logicalName.match(/[^aeiou]y$/)) {
+        return logicalName.slice(0, -1) + "ies";
+    }
+
+    // 4. If it ends with "plugin", do not change
+    if (logicalName.endsWith("plugin")) {
+        return logicalName;
+    }
+
+    // 5. If it ends with "ch", "sh", "x", "z" → add "es"
+    if (logicalName.match(/(ch|sh|x|z)$/)) {
+        return logicalName + "es";
+    }
+
+    // 6. General rule → add "s"
+    return logicalName + "s";
+}
