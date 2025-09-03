@@ -58,7 +58,8 @@ async function headers(): Promise<HeadersInit> {
     'OData-MaxVersion': '4.0',
     'OData-Version': '4.0',
     'Accept': 'application/json',
-    'Prefer': 'odata.include-annotations="*"'
+    'Prefer': 'odata.include-annotations="*"',
+    'If-Match': '*'
   };
 }
 
@@ -163,7 +164,7 @@ app.patch('/api/data/v9.2/*', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Error updating record', details: error });
   }  
 
-  res.json({ id, name: '', entityType });
+  res.json({ id, entityType });
 });
 
 // Retrieve multiple records
