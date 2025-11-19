@@ -167,32 +167,8 @@ app.patch('/api/data/v9.2/*', async (req: Request, res: Response) => {
   res.json({ id, entityType });
 });
 
-// Retrieve multiple records
-app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
-  console.log('Fetching multiple records...');
-  console.log('Request query:', req.query);
-  console.log('Request params:', req.params);
-  
-  const { entityType } = req.params;
-  const _headers = await headers();
-  
-  const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
-  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${getEntitySetNameFromLogicalName(entityType)}${queryParams ? `?${queryParams}` : ''}`;
-  
-  console.log(`Fetching data from: ${url}`);
-
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: _headers
-  });
-
-  const data = await response.json();
-
-  res.json(data);
-});
-
 // Retrieve single record
-app.get('/api/data/v9.2/:entityType/:id', async (req: Request, res: Response) => {
+app.get('/api/data/v9.2/:entityType\\(:id\\)', async (req: Request, res: Response) => {
   console.log('Fetching single record...');
   console.log('Request query:', req.query);
   console.log('Request params:', req.params);
@@ -216,6 +192,30 @@ app.get('/api/data/v9.2/:entityType/:id', async (req: Request, res: Response) =>
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving record', details: error });
   }
+});
+
+// Retrieve multiple records
+app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
+  console.log('Fetching multiple records...');
+  console.log('Request query:', req.query);
+  console.log('Request params:', req.params);
+  
+  const { entityType } = req.params;
+  const _headers = await headers();
+  
+  const queryParams = new URLSearchParams(req.query as Record<string, string>).toString();
+  const url = `${ENVIRONMENT_URL}/api/data/v9.2/${getEntitySetNameFromLogicalName(entityType)}${queryParams ? `?${queryParams}` : ''}`;
+  
+  console.log(`Fetching data from: ${url}`);
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: _headers
+  });
+
+  const data = await response.json();
+
+  res.json(data);
 });
 
 // Execute operation
