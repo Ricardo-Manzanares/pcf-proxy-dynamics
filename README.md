@@ -62,7 +62,7 @@ Proxy base URL: http://localhost:3001
 
 ## 4. Component Usage
 
-# Root component
+### Root component
 ```js
     import * as React from "react";
     import { IGenericComponentProps } from "../lib/props";
@@ -79,7 +79,7 @@ Proxy base URL: http://localhost:3001
     };
 ```
 
-# Integration in index.ts
+### Integration in index.ts
 ```js
     import { IGenericComponentProps } from "./lib/props";
     import { GenericComponent } from "./components/generic-component";
