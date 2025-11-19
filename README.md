@@ -14,7 +14,8 @@ component logic in real time, avoiding the heavy deploy-test cycle.
 6. [Recommended Development Flow](#6-recommended-development-flow)
 7. [Notes](#7-notes)
 8. [Troubleshooting](#8-troubleshooting)
-9. [Extension Suggestion](#9-extension-suggestion)
+9. [Environment Configuration (.env)](#9-environment-configuration-env)
+10. [Extension Suggestion](#10-extension-suggestion)
 
 
 ## 1. Installation
@@ -142,8 +143,21 @@ Proxy base URL: http://localhost:3001
 | webAPI undefined | Check localhost detection. |
 | Empty data | Validate queries and proxy configuration. |
 
+## 9. Environment Configuration (.env)
 
-## 9. Extension Suggestion
+Before running the project, make sure to configure a `.env` file at the root of your workspace.  
+This file stores the connection details required to authenticate against your Dynamics CRM environment.
+
+### Required Variables
+
+```env
+ENVIRONMENT_URL=<Your Dynamics CRM environment URL>
+TENANT_ID=<Your Azure AD Tenant ID>
+CLIENT_ID=<Your Azure AD Application (Client) ID with CRM permissions>
+CLIENT_SECRET=<Your Azure AD Application Client Secret>
+```
+
+## 10. Extension Suggestion
 
 Create service modules (e.g., lib/DataverseQueueService.ts) consuming
 webAPI and inject abstractions through props for easier mocking and
