@@ -1,5 +1,4 @@
 # pcf-proxy-dynamics #
-Package: @ricardo-manzanares/pcf-proxy-dynamics
 
 This package provides a lightweight Web API proxy that enables local
 React development for PCF components without requiring a running
