@@ -35,6 +35,9 @@ Proxy base URL: http://localhost:3001
 
 ## 2. Runtime Switch (Local vs Dataverse)
 ```js
+    var _api : ComponentFramework.WebApi;
+    var _userSettings, _recordId, _entityName;
+
     if (document.location.host.includes('localhost')) {
       const { WebApiProxy } = require("@ricardo-manzanares/pcf-proxy-dynamics");
       _api = new WebApiProxy("http://localhost:3001");
