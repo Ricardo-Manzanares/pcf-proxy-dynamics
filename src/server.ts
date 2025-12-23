@@ -187,7 +187,17 @@ app.get('/api/data/v9.2/:entityType\\(:id\\)', async (req: Request, res: Respons
       headers: _headers
     });
 
-    const data = await response.json();
+    const data = await response;
+    if (data == null) {
+      res.status(500).json({ error: 'No data retrieved' });
+      return;
+    }
+
+    if (!response.ok) {
+      res.status(500).json({ error: 'Error retrieving records', details: response.statusText });
+      return;
+    }
+
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving record', details: error });
@@ -213,8 +223,17 @@ app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
     headers: _headers
   });
 
-  const data = await response.json();
+  const data = await response;
+  if (data == null) {
+    res.status(500).json({ error: 'No data retrieved' });
+    return;
+  }
 
+  if (!response.ok) {
+    res.status(500).json({ error: 'Error retrieving records', details: response.statusText });
+    return;
+  }
+  
   res.json(data);
 });
 
