@@ -1,6 +1,6 @@
 {
-  "name": "@ricardo-manzanares/pcf-proxy-dynamics",
-  "version": "1.0.17",
+  "name": "@axazure/pcf-proxy-dynamics",
+  "version": "1.0.19",
   "description": "Backend allowing PCF components to access Dynamics 365 data",
   "main": "dist/WebApiProxy.js",
   "types": "dist/WebApiProxy.d.ts",
@@ -41,5 +41,20 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ricardo-Manzanares/pcf-proxy-dynamics.git"
+  },
+  "keywords": [
+    "PCF",
+    "Dynamics",
+    "Proxy"
+  ],
+  "author": "Ricardo Manzanares Camargo y Fernando Jose Cabrera Castillo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ricardo-Manzanares/pcf-proxy-dynamics/issues"
+  },
+  "homepage": "https://github.com/Ricardo-Manzanares/pcf-proxy-dynamics#readme"
 }

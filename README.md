@@ -20,11 +20,11 @@ component logic in real time, avoiding the heavy deploy-test cycle.
 
 ## 1. Installation
 ```js
-    npm install @ricardo-manzanares/pcf-proxy-dynamics --save-dev
+    npm i @axazure/pcf-proxy-dynamics
 ```
 Add the backend script if it’s missing:
 ```js
-    "start:backend": "node ./node_modules/@ricardo-manzanares/pcf-proxy-dynamics/dist/server.js"
+    "start:backend": "node ./node_modules/@axazure/pcf-proxy-dynamics/dist/server.js"
 ```
 Start your local dev environment:
 ```{r, engine='bash', count_lines}
@@ -39,7 +39,7 @@ Proxy base URL: http://localhost:3001
     var _userSettings, _recordId, _entityName;
 
     if (document.location.host.includes('localhost')) {
-      const { WebApiProxy } = require("@ricardo-manzanares/pcf-proxy-dynamics");
+      const { WebApiProxy } = require("@axazure/pcf-proxy-dynamics");
       _api = new WebApiProxy("http://localhost:3001");
       _userSettings = {} as ComponentFramework.UserSettings;
       _userSettings.userId = "00000000-0000-0000-0000-000000000000";
@@ -92,7 +92,7 @@ Proxy base URL: http://localhost:3001
         var _userSettings, _recordId, _entityName = null;
 
         if (document.location.host.includes('localhost')) {
-            const { WebApiProxy } = require("@ricardo-manzanares/pcf-proxy-dynamics");
+            const { WebApiProxy } = require("@axazure/pcf-proxy-dynamics");
             _api = new WebApiProxy("http://localhost:3001");
             _userSettings = {} as ComponentFramework.UserSettings;
             _userSettings.userId = "00000000-0000-0000-0000-000000000000";
