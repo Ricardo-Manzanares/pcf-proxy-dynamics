@@ -187,17 +187,13 @@ app.get('/api/data/v9.2/:entityType\\(:id\\)', async (req: Request, res: Respons
       headers: _headers
     });
 
-    const data = await response;
-    if (data == null) {
-      res.status(500).json({ error: 'No data retrieved' });
-      return;
-    }
-
     if (!response.ok) {
-      res.status(500).json({ error: 'Error retrieving records', details: response.statusText });
+      const errorText = await response.text();
+      res.status(response.status).json({ error: 'Error retrieving record', details: errorText });
       return;
     }
 
+    const data = await response.json();
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving record', details: error });
@@ -223,17 +219,13 @@ app.get('/api/data/v9.2/:entityType', async (req: Request, res: Response) => {
     headers: _headers
   });
 
-  const data = await response;
-  if (data == null) {
-    res.status(500).json({ error: 'No data retrieved' });
+  if (!response.ok) {
+    const errorText = await response.text();
+    res.status(response.status).json({ error: 'Error retrieving records', details: errorText });
     return;
   }
 
-  if (!response.ok) {
-    res.status(500).json({ error: 'Error retrieving records', details: response.statusText });
-    return;
-  }
-  
+  const data = await response.json();
   res.json(data);
 });
 
