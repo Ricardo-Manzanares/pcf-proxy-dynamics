@@ -1,6 +1,6 @@
 {
   "name": "@axazure/pcf-proxy-dynamics",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Backend allowing PCF components to access Dynamics 365 data",
   "main": "dist/WebApiProxy.js",
   "types": "dist/WebApiProxy.d.ts",

@@ -58,8 +58,7 @@ async function headers(): Promise<HeadersInit> {
     'OData-MaxVersion': '4.0',
     'OData-Version': '4.0',
     'Accept': 'application/json',
-    'Prefer': 'odata.include-annotations="*"',
-    'If-Match': '*'
+    'Prefer': 'odata.include-annotations="*"'
   };
 }
 
@@ -152,7 +151,7 @@ app.patch('/api/data/v9.2/*', async (req: Request, res: Response) => {
   try {
     await fetch(`${ENVIRONMENT_URL}/api/data/v9.2/${entityType}(${id})`, {
       method: 'PATCH',
-      headers: _headers,
+      headers: { ..._headers, 'If-Match': '*' },
       body: JSON.stringify(req.body)
     }).then(response => {
       if (!response.ok) { 
