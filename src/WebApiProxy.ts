@@ -70,7 +70,7 @@ export class WebApiProxy implements ComponentFramework.WebApi{
         };
     }
     async retrieveRecord(entityType: string, id: string, options?: string): Promise<ComponentFramework.WebApi.Entity> {
-        return await fetch(this.host+'/api/data/v9.2/'+entityType +"("+id+")" + (options ?? ''));
+        return await (await fetch(this.host+'/api/data/v9.2/'+entityType +"("+id+")" + (options ?? ''))).json();
     }
 
     async execute(request: any): Promise<any> {
